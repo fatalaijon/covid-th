@@ -5,6 +5,16 @@ including new cases, hospitalizations, and deaths.
 
 ![Graph of Daily New Covid Cases](daily-cases.png)
 
+[Open Notebook on Github](https://github.com/fatalaijon/covid-th/blob/master/covid.ipynb)
+or
+[![Open In Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fatalaijon/covid-th/blob/master/covid.ipynb)
+
+One of the plots raise errors when run in Google Colab, but they work fine on my
+computer using Linux and Jupyter 4.7.0 with IPython 7.16.1 and Python 3.6.9.
+
+If you run this in Colab and fix the problem, please email me or open an issue or pull request on Github.
+
+
 ### Source of Data
 
 The Thailand Department of Disease Control provides data through a free API.
