@@ -85,19 +85,58 @@ covid['date'] = pd.to_datetime(covid['Date'])
 this creates a new column named 'date'. You could simply replace values
 in the existing 'Date' column, but I kept it.
 
-The creators of the Covid data use American style date format mm/dd/yyyy
-instead of the more typical dd/mm/yyyy as used in Thailand. Weird.
+### Transforming data
 
-When plotting the data, the pandas plot methods sometimes put too many
-tick labels on the x-axis and display the full datetime object as "2021-01-04 00:00:00". 
-
-To remove the time portion, specify a date formatter:
+The Covid data contains a field (column) of Dates, as strings.
+We transform them to Timestamps using:
 ```python
-ax.xaxis.set_major_formatter(matplotlib.dates.DateFormatter("%F"))
+covid['Date'] = pd.to_datetime(covid['Date'])
 ```
+
+but the observations have only a date value, the time is always 0:00:00.
+
+Pandas Series class has a [transform](https://pandas.pydata.org/docs/reference/api/pandas.Series.transform.html) method with syntax:
+```python
+result: Series = series.transform(func, axis=0, *args, **kwargs)
+```
+where `func` is a function to apply to each element in the series.  `*args` and `**kwargs` are passed to the `func`.
+
+To transform Timestamp to datetime.date use:
+```python
+dates = covid['Date'].transform(pd.Timestamp.date)
+```
+instead of saving the result as separate Series object, we save it as a new column in the `covid` DataFrame.
+
+## Formatting Dates and Tick Mark Spacing
+
+The creators of the Thai Covid data use American style date format mm/dd/yyyy
+instead of the more typical dd/mm/yyyy as used in Thailand. Weird. Pandas seems to detect this and convert dates correctly.
+
+When plotting the data, the pandas plot methods put too many tick labels
+on the x-axis and display the full datetime object as "2021-01-04 00:00:00". 
+
+Fixes are:
+* convert Timestamp to date
+* use a DateFormatter
+* specify frequency of major tick labels
+
+
+Good reference is part of a free course:
+<https://www.earthdatascience.org/courses/use-data-open-source-python/use-time-series-data-in-python/date-time-types-in-pandas-python/customize-dates-matplotlib-plots-python/>
+
+The two methods used are:
+```python
+fig, ax = plt.subplots(...)
+
+# another good format is "%F" (yyyy-mm-dd)
+date_format = matplotlib.dates.DateFormatter("%m-%d")
+ax.xaxis.set_major_formatter( date_formatter )
+
+# interval=1 means 1 tick label each week
+ax.xaxis.set_major_locator(matplotlib.dates.WeekdayLocator(interval=1)
+```
+
 where `ax` is a reference to the plot.  There is also a `set_minor_formatter` method.
 
 
-Ref: <https://izziswift.com/pandas-timeseries-plot-setting-x-axis-major-and-minor-ticks-and-labels/>
-I didn't do
-I'm interested in recent data, so keep only 
+Another, older reference: <https://izziswift.com/pandas-timeseries-plot-setting-x-axis-major-and-minor-ticks-and-labels/>
