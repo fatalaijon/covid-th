@@ -1,16 +1,19 @@
 ## Thailand Covid Data
 
+A Jupyter Notebook to create graphs of Thailand Covid-19 data,
+including new cases, hospitalizations, and deaths.
+
+![Graph of Daily New Covid Cases](daily-cases.png)
 
 ### Source of Data
 
-The Thailand Department of Disease Control makes data available through
-a free API.
+The Thailand Department of Disease Control provides data through a free API.
 * Home page <https://covid19.th-stat.com/>
-* API reference <https://covid19.th-stat.com/en/api> (for Thai use "th" instead of "en">
+* API reference <https://covid19.th-stat.com/en/api> (for Thai use "th" instead of "en")
 
 The URLs are:
 
-* <https://covid19.th-stat.com/api/open/timeline> daily reports since 1/1/2020, including daily and cumulative values for: confirmed, recovered, hospitalized, and died. JSON format
+* <https://covid19.th-stat.com/api/open/timeline> daily reports since 1/1/2020, including daily and cumulative values for: confirmed cases, recovered, hospitalized, and died. JSON format
 * <https://covid19.th-stat.com/api/open/today> today's report, same format as the timeline (above).
 * <https://covid19.th-stat.com/api/open/cases> data for each case, including gener, nationality, province, district, date confirmed, and quarantine date (if any).  Reverse chronological order. Dataset is **large** due to redundant encoding of both Thai and English for fields and use of full location names instead of codes. JSON format.
 * <https://covid19.th-stat.com/api/open/area> a single JSON record containing the following (including typo and unnecessary backslashes):
@@ -31,17 +34,17 @@ The actual file is all one line with no space between fields.
  "DevBy": "https:\/\/www.kidkarnmai.com\/",
  "SeverBy": "https:\/\/smilehost.asia\/",
  "Data": [
-    ...
- {"Date": "05\/01\/2021",
-  "NewConfirmed": 1891,
-  "NewRecovered": 1821,
-  "NewHospitalized": 49,
-  "NewDeaths": 21,
-  "Confirmed": 67044,
-  "Recovered": 38075,
-  "Hospitalized": 28745,
-  "Deaths": 224}
- ]
+   ...
+   {"Date": "05\/01\/2021",
+    "NewConfirmed": 1891,
+    "NewRecovered": 1821,
+    "NewHospitalized": 49,
+    "NewDeaths": 21,
+    "Confirmed": 67044,
+    "Recovered": 38075,
+    "Hospitalized": 28745,
+    "Deaths": 224}
+  ]
 }
 ```
 
@@ -78,14 +81,12 @@ Hospitalized     60 non-null     int64
 Deaths           60 non-null     int64 
 ```
 
+### Transforming data
+
 The `Date` field is just a string. Convert it to a timestamp using:
 ```
-covid['date'] = pd.to_datetime(covid['Date'])
+covid['Date'] = pd.to_datetime(covid['Date'])
 ```
-this creates a new column named 'date'. You could simply replace values
-in the existing 'Date' column, but I kept it.
-
-### Transforming data
 
 The Covid data contains a field (column) of Dates, as strings.
 We transform them to Timestamps using:
@@ -107,7 +108,8 @@ dates = covid['Date'].transform(pd.Timestamp.date)
 ```
 instead of saving the result as separate Series object, we save it as a new column in the `covid` DataFrame.
 
-## Formatting Dates and Tick Mark Spacing
+
+### Formatting Dates and Tick Mark Spacing
 
 The creators of the Thai Covid data use American style date format mm/dd/yyyy
 instead of the more typical dd/mm/yyyy as used in Thailand. Weird. Pandas seems to detect this and convert dates correctly.
@@ -138,5 +140,6 @@ ax.xaxis.set_major_locator(matplotlib.dates.WeekdayLocator(interval=1)
 
 where `ax` is a reference to the plot.  There is also a `set_minor_formatter` method.
 
-
 Another, older reference: <https://izziswift.com/pandas-timeseries-plot-setting-x-axis-major-and-minor-ticks-and-labels/>
+
+
