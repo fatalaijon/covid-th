@@ -11,7 +11,7 @@ or
 
 
 
-### Source of Data
+### Thailand Covid Dataset
 
 The Thailand Department of Disease Control provides data through a free API.
 * Home page <https://covid19.th-stat.com/>
@@ -54,7 +54,8 @@ The actual file is all one line with no space between fields.
 }
 ```
 
-Another source of Covid data for Thailand is [Our World in Data](https://ourworldindata.org/coronavirus/).  The URL for Thai data is <https://ourworldindata.org/coronavirus/country/thailand>, but I don't see how to download for only a specific country.
+A source of global Covid data, including Thailand, is [Our World in Data][owid-coronavirus]. Details below in [World Covid Data](#world-covid-data)
+
 
 ### Pandas Syntax Used
 
@@ -109,21 +110,31 @@ dates = covid['Date'].transform(pd.Timestamp.date)
 ```
 instead of saving the result as separate Series object, we save it as a new column in the `covid` DataFrame.
 
-### Date as Index Variable
+The Thai Covid CSV data use the American date format mm/dd/yyyy
+instead of the more typical dd/mm/yyyy as used in Thailand. Weird. Pandas correctly detects this and convert dates correctly.
 
-For a time series its better to use the dates or timestamps as index variable (instead of an arbitrary integer). This makes it easier to access date ranges and combine data from multiple files. The DataFrame constructor and pd.read_xxx methods have optional parameters to automatically convert strings to dates and set the index column:
+### Automatic Data Conversion
+
+The DataFrame constructor and pd.read_xxx methods have optional parameters to automatically convert strings (or int) to dates and set the index column:
 ```python
 df = pd.read_csv('timeseries.csv',
-                 parse_dates=['Date','Another-Date'], # columns to convert to dates
-                 index_col='Date'  # name of column containing dates for index
-                 )
-
-# If there is only one date column, can use this abbreviated syntax
-df = pd.read_csv('timeseries.csv',
-                 index_col='Date', # name of column for index
-                 parse_dates=True  # parse date strings in the index column
+                 # columns to convert to dates
+                 parse_dates=['Date','Another-Date'], 
+                 # name of column containing date for index
+                 index_col='Date'  
                  )
 ```
+If there is only one date column, use this abbreviated syntax
+```python
+df = pd.read_csv('timeseries.csv',
+                 index_col='Date',
+                 parse_dates=True
+                 )
+```
+
+### Date as Index Variable
+
+For a time series its often better to use a date or timestamp as index variable (instead of an arbitrary integer). This makes it easier to access date ranges and combine data from multiple files. 
 
 When you do this, there won't be a `'Date'` column in the DataFrame, but you can access the dates using `.index`:  
 ```python
@@ -131,19 +142,21 @@ df.index.values  # displays all values
 print("Starting date is", df.index.start)
 ```
 
+Another way to use a date as index is by directly assigning it, such as (for Thai covid data):
+```
+covid.index = covid['Date'].transform(pd.Timestamp.date)
+```
+I didn't do that in the Thai covid notebook.
+
 ### Formatting Dates and Tick Mark Spacing
 
-The creators of the Thai Covid data use American style date format mm/dd/yyyy
-instead of the more typical dd/mm/yyyy as used in Thailand. Weird. Pandas seems to detect this and convert dates correctly.
-
-When plotting the data, the pandas plot methods put too many tick labels
+When plotting the Covid data, the pandas plot methods put too many tick labels
 on the x-axis and display the full datetime object as "2021-01-04 00:00:00". 
 
 Fixes are:
 * convert Timestamp to date
 * use a DateFormatter
 * specify frequency of major tick labels
-
 
 Good reference is part of a free course on time series:
 <https://www.earthdatascience.org/courses/use-data-open-source-python/use-time-series-data-in-python/date-time-types-in-pandas-python/customize-dates-matplotlib-plots-python/>
@@ -167,77 +180,76 @@ Another, older reference: <https://izziswift.com/pandas-timeseries-plot-setting-
 
 ### Graphs and Charts
 
-To create graphs from a Pandas dataset, you can use Pandas interface to Matplotlib, or use Matplotlib directly.
+To create graphs from a Pandas dataset, you can use Pandas interface to Matplotlib or use Matplotlib methods directly.
 
 Using Pandas (`covid` is a DataFrame object):
 ```python
-covid.plot.line(x='Date', y=['NewConfirmed', 'New Hospitalized'],
-                ylabel='Daily Cases', title='Daily New Cases')
+covid.plot.line(x='Date', 
+                y=['NewConfirmed', 'New Hospitalized'],
+                ylabel='Daily Cases', 
+                title='Daily New Cases',
+                grid=True) 
 ```
 
 using Matplotlib, specify the series to plot:
 ```python
 plt.title('Daily New Cases')
-plt.plot(covid['Date'], covid['NewConfirmed'], color='blue', ...)
-plt.grid(axis='y')
+plt.plot(covid['Date'], covid['NewConfirmed'],
+         color='blue', ...),
+         ...)
+plt.grid(axis='y')    # only y-axis grid lines
 ```
 
-Pandas `dataframe.plot` provides a concise interface, but its often not clear how to create plots the way I want. Matplotlib has a more flexible interface and better [documentation][matplotlib-docs].
+Pandas `dataframe.plot` provides a concise interface, but its often not clear how to create plots the way we want. Matplotlib has a more flexible interface and better [documentation][matplotlib-docs].
 
 [matplotlib-docs]: https://matplotlib.org/stable/contents.html
 
 
-### Formatting Dates and Tick Mark Spacing
+## World Covid Data
 
-The creators of the Thai Covid data use American style date format mm/dd/yyyy
-instead of the more typical dd/mm/yyyy as used in Thailand. Weird. Pandas seems to detect this and convert dates correctly.
+[owid-coronavirus]: https://ourworldindata.org/coronavirus/
 
-When plotting the data, the pandas plot methods put too many tick labels
-on the x-axis and display the full datetime object as "2021-01-04 00:00:00". 
+[Our World in Data][owid-coronavirus] provides global covid data in several formats. They also have vaccine data.
 
-Fixes are:
-* convert Timestamp to date
-* use a DateFormatter
-* specify frequency of major tick labels
+* The web page for Thai data is <https://ourworldindata.org/coronavirus/country/thailand>.
 
 
-Good reference is part of a free course on time series:
-<https://www.earthdatascience.org/courses/use-data-open-source-python/use-time-series-data-in-python/date-time-types-in-pandas-python/customize-dates-matplotlib-plots-python/>
+### OWID Data on Github
 
-The two methods used are:
-```python
-fig, ax = plt.subplots(...)
+* World covid case data with one record for each country/date: <https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/jhu/full_data.csv>
+* Location names with population: <https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/jhu/locations.csv>
+* Vaccination data: <https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/vaccinations/vaccinations.csv>
+* Github Home for all Covid datasets: <https://github.com/owid/covid-19-data/tree/master/public/data>
+  - CSV and XLSX 
+  - JSON
+* Location names with population: <https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/jhu/locations.csv>
+* Vaccination data: <https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/vaccinations/vaccinations.csv>
+* Stable URLs: for data in the `public` directory, stable URLs are <https://covid.ourworldindata.org/data/xxxxxxxxx.csv> (or whatever format).
 
-# another good format is "%F" (yyyy-mm-dd)
-date_format = matplotlib.dates.DateFormatter("%m-%d")
-ax.xaxis.set_major_formatter( date_formatter )
+`latest` - contains shortened version of complete dataset, with only the latest values for each location.
 
-# interval=1 means 1 tick label each week
-ax.xaxis.set_major_locator(matplotlib.dates.WeekdayLocator(interval=1)
+1 Row for each country and data: 
+  * <http://covid.ourworldindata.org/data/jhu/full_data.csv>, or
+  * <https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/jhu/full_data.csv>
+
+Fields are:
 ```
+0   date             83875 non-null  object 
+ 1   location         83875 non-null  object 
+ 2   new_cases        83866 non-null  float64
+ 3   new_deaths       74330 non-null  float64
+ 4   total_cases      83868 non-null  float64
+ 5   total_deaths     74172 non-null  float64
+ 6   weekly_cases     82865 non-null  float64
+ 7   weekly_deaths    82865 non-null  float64
+ 8   biweekly_cases   81472 non-null  float64
+ 9   biweekly_deaths  81472 non-null  float64
+ ```
 
-where `ax` is a reference to the plot.  There is also a `set_minor_formatter` method.
+### Plots of World Covid Data
 
-Another, older reference: <https://izziswift.com/pandas-timeseries-plot-setting-x-axis-major-and-minor-ticks-and-labels/>
+Uses data from JHU, provided by Our World in Data.
 
-
-### Graphs and Charts
-
-To create graphs from a Pandas dataset, you can use Pandas interface to Matplotlib, or use Matplotlib directly.
-
-Using Pandas (`covid` is a DataFrame object):
-```python
-covid.plot.line(x='Date', y=['NewConfirmed', 'New Hospitalized'],
-                ylabel='Daily Cases', title='Daily New Cases')
-```
-
-using Matplotlib, specify the series to plot:
-```python
-plt.title('Daily New Cases')
-plt.plot(covid['Date'], covid['NewConfirmed'], color='blue', ...)
-plt.grid(axis='y')
-```
-
-Pandas `dataframe.plot` provides a concise interface, but its often not clear how to create plots the way I want. Matplotlib has a more flexible interface and better [documentation][matplotlib-docs].
-
-[matplotlib-docs]: https://matplotlib.org/stable/contents.html
+ [Open Notebook on Github](https://github.com/fatalaijon/covid-th/blob/master/covid-world.ipynb)
+or
+[![Open In Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fatalaijon/covid-th/blob/master/covid-world.ipynb)
