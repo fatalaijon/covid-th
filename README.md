@@ -204,37 +204,37 @@ Pandas `dataframe.plot` provides a concise interface, but its often not clear ho
 
 [matplotlib-docs]: https://matplotlib.org/stable/contents.html
 
+---
 
 ## World Covid Data
 
 [owid-coronavirus]: https://ourworldindata.org/coronavirus/
 
-[Our World in Data][owid-coronavirus] provides global covid data in several formats. They also have vaccine data.
+[Our World in Data][owid-coronavirus] provides global Covid data in several formats. They also have vaccine data.
 
-* The web page for Thai data is <https://ourworldindata.org/coronavirus/country/thailand>.
+The web page for Thai data is <https://ourworldindata.org/coronavirus/country/thailand>.
 
 
 ### OWID Data on Github
 
-* World covid case data with one record for each country/date: <https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/jhu/full_data.csv>
+* World Covid case data with one record for each country/date: 
+  - <https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/jhu/full_data.csv>
+  * <http://covid.ourworldindata.org/data/jhu/full_data.csv> (stable URL)
 * Location names with population: <https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/jhu/locations.csv>
 * Vaccination data: <https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/vaccinations/vaccinations.csv>
-* Github Home for all Covid datasets: <https://github.com/owid/covid-19-data/tree/master/public/data>
+* Github home for all Covid datasets: <https://github.com/owid/covid-19-data/tree/master/public/data>
   - CSV and XLSX 
   - JSON
-* Location names with population: <https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/jhu/locations.csv>
-* Vaccination data: <https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/vaccinations/vaccinations.csv>
 * Stable URLs: for data in the `public` directory, stable URLs are <https://covid.ourworldindata.org/data/xxxxxxxxx.csv> (or whatever format).
 
 `latest` - contains shortened version of complete dataset, with only the latest values for each location.
 
-1 Row for each country and data: 
-  * <http://covid.ourworldindata.org/data/jhu/full_data.csv>, or
-  * <https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/jhu/full_data.csv>
 
-Fields are:
+The JHU `full_data.csv` uses the following format:
+
 ```
-0   date             83875 non-null  object 
+     Field Name       Values          Datatype
+ 0   date             83875 non-null  object 
  1   location         83875 non-null  object 
  2   new_cases        83866 non-null  float64
  3   new_deaths       74330 non-null  float64
