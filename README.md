@@ -9,7 +9,7 @@
 A Jupyter Notebook to visualize Thailand Covid-19 new cases, deaths, and hospitalizations, 
 using data from the Thailand Department of Disease Control.
 
-[![Open In Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fatalaijon/covid-th/blob/master/covid-thai.ipynb)    
+[![Open In Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fatalaijon/covid-th/blob/master/covid-thai.ipynb) interactively run code and create graphs    
 or [View Notebook on Github](https://github.com/fatalaijon/covid-th/blob/master/covid-thai.ipynb)
 to view the code, but **not** execute it (no graphs).
 
@@ -66,7 +66,7 @@ A source of global Covid data, including Thailand, is [Our World in Data][owid-c
 
 Graphs of country-by-country Covid cases and deaths. Data is from Johns Hopkins University, provided by [Our World in Data][owid-coronavirus].
 
-[![Open In Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fatalaijon/covid-th/blob/master/covid-world.ipynb)    
+[![Open In Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fatalaijon/covid-th/blob/master/covid-world.ipynb) interactively run code and create graphs         
 or
 [View Notebook on Github](https://github.com/fatalaijon/covid-th/blob/master/covid-world.ipynb) to view the code, but not execute it (no graphs).
 
