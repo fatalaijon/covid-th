@@ -1,15 +1,19 @@
-## Thailand Covid Data
+## Covid Case Visualization using Jupyter Notebooks
 
-A Jupyter Notebook to create graphs of Thailand Covid-19 data,
-including new cases, hospitalizations, and deaths.
+[Thailand Covid Cases](#thailand-covid-cases)
+
+[World Covid Cases](#world-covid-data) visualization for any specified country.
+
+## Thailand Covid Cases
+
+A Jupyter Notebook to visualize Thailand Covid-19 new cases, deaths, and hospitalizations, 
+using data from the Thailand Department of Disease Control.
+
+[![Open In Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fatalaijon/covid-th/blob/master/covid-thai.ipynb)    
+or [View Notebook on Github](https://github.com/fatalaijon/covid-th/blob/master/covid-thai.ipynb)
+to view the code, but **not** execute it (no graphs).
 
 ![Graph of Daily New Covid Cases](daily-cases.png)
-
-[Open Notebook on Github](https://github.com/fatalaijon/covid-th/blob/master/covid.ipynb)
-or
-[![Open In Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fatalaijon/covid-th/blob/master/covid.ipynb)
-
-
 
 ### Thailand Covid Dataset
 
@@ -56,8 +60,58 @@ The actual file is all one line with no space between fields.
 
 A source of global Covid data, including Thailand, is [Our World in Data][owid-coronavirus]. Details below in [World Covid Data](#world-covid-data)
 
+---
 
-### Pandas Syntax Used
+## World Covid Data
+
+Graphs of country-by-country Covid cases and deaths. Data is from Johns Hopkins University, provided by [Our World in Data][owid-coronavirus].
+
+[![Open In Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fatalaijon/covid-th/blob/master/covid-world.ipynb)    
+or
+[View Notebook on Github](https://github.com/fatalaijon/covid-th/blob/master/covid-world.ipynb) to view the code, but not execute it (no graphs).
+
+[owid-coronavirus]: https://ourworldindata.org/coronavirus/
+
+![India Daily Covid Cases](india-cases.png)
+
+### OWID Data on Github
+
+[Our World in Data][owid-coronavirus] provides global Covid data in several formats. They also have vaccine data.
+
+The web page for Thai data is <https://ourworldindata.org/coronavirus/country/thailand>.
+
+* World Covid case data with one record for each country/date: 
+  - <https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/jhu/full_data.csv>
+  * <http://covid.ourworldindata.org/data/jhu/full_data.csv> (stable URL)
+* Location names with population: <https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/jhu/locations.csv>
+* Vaccination data: <https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/vaccinations/vaccinations.csv>
+* Github home for all Covid datasets: <https://github.com/owid/covid-19-data/tree/master/public/data>
+  - CSV and XLSX 
+  - JSON
+* Stable URLs: for data in the `public` directory, stable URLs are <https://covid.ourworldindata.org/data/xxxxxxxxx.csv> (or whatever format).
+
+`latest` - contains shortened version of complete dataset, with only the latest values for each location.
+
+
+The JHU `full_data.csv` uses the following format:
+
+```
+     Field Name       Values          Datatype
+ 0   date             83875 non-null  object 
+ 1   location         83875 non-null  object 
+ 2   new_cases        83866 non-null  float64
+ 3   new_deaths       74330 non-null  float64
+ 4   total_cases      83868 non-null  float64
+ 5   total_deaths     74172 non-null  float64
+ 6   weekly_cases     82865 non-null  float64
+ 7   weekly_deaths    82865 non-null  float64
+ 8   biweekly_cases   81472 non-null  float64
+ 9   biweekly_deaths  81472 non-null  float64
+ ```
+
+---
+
+## Pandas Syntax Used
 
 The daily Covid data is inside a JSON object with key 'Data'.  We want to use that to create the Panda DataFrame (rather than everything in the timeline file).
 
@@ -204,52 +258,3 @@ Pandas `dataframe.plot` provides a concise interface, but its often not clear ho
 
 [matplotlib-docs]: https://matplotlib.org/stable/contents.html
 
----
-
-## World Covid Data
-
-[owid-coronavirus]: https://ourworldindata.org/coronavirus/
-
-[Our World in Data][owid-coronavirus] provides global Covid data in several formats. They also have vaccine data.
-
-The web page for Thai data is <https://ourworldindata.org/coronavirus/country/thailand>.
-
-
-### OWID Data on Github
-
-* World Covid case data with one record for each country/date: 
-  - <https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/jhu/full_data.csv>
-  * <http://covid.ourworldindata.org/data/jhu/full_data.csv> (stable URL)
-* Location names with population: <https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/jhu/locations.csv>
-* Vaccination data: <https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/vaccinations/vaccinations.csv>
-* Github home for all Covid datasets: <https://github.com/owid/covid-19-data/tree/master/public/data>
-  - CSV and XLSX 
-  - JSON
-* Stable URLs: for data in the `public` directory, stable URLs are <https://covid.ourworldindata.org/data/xxxxxxxxx.csv> (or whatever format).
-
-`latest` - contains shortened version of complete dataset, with only the latest values for each location.
-
-
-The JHU `full_data.csv` uses the following format:
-
-```
-     Field Name       Values          Datatype
- 0   date             83875 non-null  object 
- 1   location         83875 non-null  object 
- 2   new_cases        83866 non-null  float64
- 3   new_deaths       74330 non-null  float64
- 4   total_cases      83868 non-null  float64
- 5   total_deaths     74172 non-null  float64
- 6   weekly_cases     82865 non-null  float64
- 7   weekly_deaths    82865 non-null  float64
- 8   biweekly_cases   81472 non-null  float64
- 9   biweekly_deaths  81472 non-null  float64
- ```
-
-### Plots of World Covid Data
-
-Uses data from JHU, provided by Our World in Data.
-
- [Open Notebook on Github](https://github.com/fatalaijon/covid-th/blob/master/covid-world.ipynb)
-or
-[![Open In Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/fatalaijon/covid-th/blob/master/covid-world.ipynb)
