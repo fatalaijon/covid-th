@@ -15,6 +15,8 @@ to view the code, but **not** execute it (no graphs).
 
 ![Graph of Daily New Covid Cases](daily-cases.png)
 
+![Graph of Hospitalizations](hospital-cases.png)
+
 ### Thailand Covid Dataset
 
 The Thailand Department of Disease Control provides data through a free API.
