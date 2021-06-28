@@ -25,9 +25,12 @@ The Thailand Department of Disease Control provides data through a free API.
 
 The URLs are:
 
-* <https://covid19.th-stat.com/api/open/timeline> daily reports since 1/1/2020, including daily and cumulative values for: confirmed cases, recovered, hospitalized, and died. JSON format
-* <https://covid19.th-stat.com/api/open/today> today's report, same format as the timeline (above).
-* <https://covid19.th-stat.com/api/open/cases> data for each case, including gener, nationality, province, district, date confirmed, and quarantine date (if any).  Reverse chronological order. Dataset is **large** due to redundant encoding of both Thai and English for fields and use of full location names instead of codes. JSON format.
+* <https://covid19.th-stat.com/json/covid19v2/getTimeline.json> daily reports since 1/1/2020, including daily and cumulative values for: confirmed cases, recovered, hospitalized, and died.  Not a very RESTful name for the file.
+* <https://covid19.th-stat.com/json/covid19v3/getTodayCases.json> today's report, same format as the timeline (above).
+
+Old URLs. They don't seem to offer this data any more:
+
+* <https://covid19.th-stat.com/api/open/cases> data for each case, including gender, nationality, province, district, date confirmed, and quarantine date (if any).  Reverse chronological order. Dataset is **large** due to redundant encoding of both Thai and English for fields and use of full location names instead of codes. JSON format.
 * <https://covid19.th-stat.com/api/open/area> a single JSON record containing the following (including typo and unnecessary backslashes):
 
 ```json
@@ -110,6 +113,39 @@ The JHU `full_data.csv` uses the following format:
  8   biweekly_cases   81472 non-null  float64
  9   biweekly_deaths  81472 non-null  float64
  ```
+
+### Vaccination Data
+
+Described on <https://github.com/owid/covid-19-data/tree/master/public/data/vaccinations>.
+
+Country metadata in [locations.csv][]:
+
+| field    | meaning                                |
+|:---------|:---------------------------------------|
+| location | name of country or region in a country |
+| iso_code | 3-letter country code |
+| vaccinations | list of vaccines administered in the location |
+| last_observation_data | last observation |
+| source_name | source of collected data |
+| source_website | web location of source |
+
+Vaccination data in file [vaccinations.csv][vaccinations-csv] or .json.
+
+[vaccinations-csv]: https://github.com/owid/covid-19-data/blob/master/public/data/vaccinations/vaccinations.csv
+
+| field    | meaning                                |
+|:---------|:---------------------------------------|
+| location | name of country or region in a country |
+| iso_code | 3-letter country code                  |
+| date     | date of the observation |
+| total_vaccinations | total number of doses delivered |
+| total_vaccinations_per_hundred | total doses per hundred people |
+| daily_vaccinations_raw | ... |
+| daily_vaccinations_per_million | ... |
+| people_vaccinated | ... |
+| people_vaccinated_per_hundred | ... |
+| people_fully_vaccinated | ... |
+| people_fully_vaccinated_per_hundred | ... |
 
 ---
 
@@ -241,7 +277,7 @@ To create graphs from a Pandas dataset, you can use Pandas interface to Matplotl
 Using Pandas (`covid` is a DataFrame object):
 ```python
 covid.plot.line(x='Date', 
-                y=['NewConfirmed', 'New Hospitalized'],
+                y=['NewConfirmed', 'NewHospitalized'],
                 ylabel='Daily Cases', 
                 title='Daily New Cases',
                 grid=True) 
